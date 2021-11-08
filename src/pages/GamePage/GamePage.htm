@@ -1,0 +1,23 @@
+<body class="flex flex-column">
+    <header class="flex content-around items-center fs-20">
+        <div class="flex-auto bonuses">бонусы</div>
+        <div class="flex flex-column flex-auto h-100 content-center items-center">
+            <div>Прогресс</div>
+            <progress class="progress" value="50" max="100"></progress>
+        </div>
+        <div class="flex-auto pause">пауза
+        </div>
+    </header>
+    <main class="flex content-around items-center">
+        <div class="flex content-center items-end playing-field mlr10">
+            <div class="flex flex-column-reverse mt10" v-for="(item, index) in watchPoly">
+                <template class="flex flex-column" v-for="(item, i) in item">
+                    <img  :src="require(`/public/images/${item.color}.png`)" alt="" class="cell" :class="{ cellActive: item.active, celMistake: item.mistake }" @click="removeStar(item, index, i)">
+                 </template>
+             </div>
+        </div>
+        <div class="panel-score"></div>
+    </main>
+    <footer>
+    </footer>
+</body>

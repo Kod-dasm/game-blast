@@ -1,0 +1,27 @@
+#app {
+    // display: flex;
+    // justify-content: flex-end;
+    // align-items: center;
+    font-family: Avenir, Helvetica, Arial, sans-serif;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    text-align: center;
+    color: #ffffff;
+  }
+  
+#nav {
+padding: 30px;
+}
+  
+#nav a {
+font-weight: bold;
+color: #2c3e50;
+}
+  
+#nav a.router-link-exact-active {
+color: #42b983;
+}
+
+body {
+  background-color: rgb(36, 36, 36);
+}
