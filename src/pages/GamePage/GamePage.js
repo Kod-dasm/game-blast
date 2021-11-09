@@ -16,11 +16,14 @@ export default {
             time: 100,
             currentTimer: 0,
             timer: null,
+
             gameStart: false,
             win: false,
             lost: false,
-            countUpdateField: 3,
             pause: false,
+
+            bonuse: 0,
+            countUpdateField: 3,
         }
     },
     methods: {
@@ -59,6 +62,7 @@ export default {
             this.searchInWidth(item.color, coordX, coordY)
             if (this.polyDel.length >= this.minStar) {
                 this.burnStars()
+                this.addBonuse(this.polyDel.length)
                 this.score += this.countingScore(this.polyDel.length)
                 if (this.score >= this.needScore) {
                     this.win = true
@@ -132,6 +136,7 @@ export default {
             this.stopTimer()
             this.currentTimer = this.time
             this.poly = []
+            this.bonuse = 0
             this.score = 0
             this.countUpdateField = 3
             this.gameStart = false
@@ -144,6 +149,9 @@ export default {
                 this.pause = !this.pause
                 this.pause ? this.stopTimer() : this.startTimer()
             }
+        },
+        addBonuse(count) {
+            count > 5 ? this.bonuse++ : false
         },
     },
     computed: {
@@ -159,6 +167,9 @@ export default {
         },
         showLost() {
             return this.lost
+        },
+        showBonuse() {
+            return this.bonuse
         },
         showCurrentTimer() {
             return this.currentTimer

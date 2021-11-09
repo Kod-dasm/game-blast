@@ -1,11 +1,16 @@
-<body class="flex flex-column content-between plr100">
+<body class="body flex flex-column content-between">
     <header class="header size-rectangle flex content-around items-start fs-20">
-        <div class="flex-auto bonuses">бонусы</div>
-        <div class="rectangle-progress size-rectangle flex flex-column flex-auto h-100 content-center items-center">
+        <div class="flex content-center items-center flex-auto h-85">
+            <div class="button_update size-rectangle flex content-center items-center h-60" @click="updateField">
+                БОНУСЫ
+                <div class="button_update-ellipse size-rectangle flex content-center items-center">{{ showBonuse }}</div>
+            </div>
+        </div>
+        <div class="rectangle-progress size-rectangle flex flex-column flex-auto content-center items-center h-85">
             <div>Прогресс</div>
             <progress class="progress" :value="score" :max="needScore"></progress>
         </div>
-        <div class="flex content-center items-center flex-auto">
+        <div class="flex content-center items-center flex-auto h-85">
             <div class="pause size-rectangle" @click="putPause"></div>
         </div>
     </header>
@@ -33,12 +38,18 @@
         </div>
     </main>
     <footer class="flex content-end">
-        <div class="button_update size-rectangle flex content-center items-center cursor-pointer mr50" @click="updateField">
-            Обновить
-            <div class="button_update-ellipse size-rectangle flex content-center items-center">{{ showCountUpdateField }}</div>
-        </div>
-        <div class="button_new-game size-rectangle flex content-center items-center cursor-pointer mr80" @click="startNewGame">
-            новая игра
+        <div class="flex content-center">
+            <div class="flex content-center footer_container-cell">
+                <div class="button_update size-rectangle flex content-center items-center cursor-pointer h-60" @click="updateField">
+                    ОБНОВИТЬ
+                    <div class="button_update-ellipse size-rectangle flex content-center items-center">{{ showCountUpdateField }}</div>
+                </div>
+            </div>
+            <div class="footer_container-cell">
+                <div class="button_new-game size-rectangle flex content-center items-center cursor-pointer h-60" @click="startNewGame">
+                    НОВАЯ ИГРА
+                </div>
+            </div>
         </div>
     </footer>
 </body>
