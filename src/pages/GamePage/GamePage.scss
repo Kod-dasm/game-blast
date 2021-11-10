@@ -104,13 +104,15 @@
 // }
 .rectangle-progress {
     background-image: url(/images/rectangle-progress.png);
+    flex: 2 2 auto;
 }
 .progress {
     // background-color: green;
     // border: 1px solid black;
     // border-radius: 20%;
     height: 40px;
-    width: 350px;
+    width: 90%;
+    // width: 350px;
 }
 .pause {
     background-image: url(/images/pause.png);
@@ -123,8 +125,6 @@
 
 .playing-field {
     background-image: url(/images/field.png);
-
-    
 }
 .cell {
     width: 48px;
@@ -144,7 +144,6 @@
     width: 500px;
     height: 500px;
 }
-
 
 .size-rectangle {
     background-size: 100% 100%;
@@ -189,6 +188,7 @@
 .icon-bonuse {
     width: 40px;
     height: 40px;
+    filter: drop-shadow(2px 3px 5px rgb(206, 0, 0));
 }
 .price-bonus {
     background-image: url(/images/price-bonuse.png);
@@ -196,9 +196,6 @@
     height: 30px;
 }
 
-// .footer_container {
-//     width: 400px;
-// }
 .footer_container-cell {
     width: 250px;
 }
@@ -225,3 +222,15 @@
 .button_new-game:hover {
     filter: drop-shadow(2px 3px 5px white);
 }
+
+@media (max-width: 1000px) {
+    // .partials {
+    //   padding-right: 10px;
+    //   color: #a4abaf;
+    //   font-weight: bold;
+    // }
+    // .images{
+    //   width: 50px;
+    //   height: 70px;
+    // }
+  }

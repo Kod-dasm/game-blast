@@ -118,44 +118,54 @@ export default {
         //Finding the width to burn stars
         hoverStars(item, coordX, coordY) { 
             this.fieldDel = []
-            !this.activeBomb ? this.searchInWidth(item.color, coordX, coordY) : this.searchDetonateZone(coordX, coordY, this.radiusBomb)
+            !this.activeBomb ? this.searchInWidth(item.color, coordX, coordY) : this.searchDetonateZone(this.radiusBomb, coordX, coordY)
         },
         saveTheStarValue(coordX, coordY) {
             this.field[coordX][coordY].hover = true
             this.fieldDel.push({ x: coordX, y: coordY })
         },
-        searchInWidth(color, coordX, coordY) {
-            this.saveTheStarValue(coordX, coordY)
-            if (coordY + 1 < this.sizeFieldY && color == this.field[coordX][coordY + 1].color && !this.field[coordX][coordY + 1].hover) {
-                this.searchInWidth(color, coordX, coordY + 1)
-            }
-            if (coordX - 1 >= 0 && color == this.field[coordX - 1][coordY].color && !this.field[coordX - 1][coordY].hover) {
-                this.searchInWidth(color, coordX - 1, coordY)
-            }
-            if (coordY - 1 >= 0 && color == this.field[coordX][coordY - 1].color && !this.field[coordX][coordY - 1].hover) {
-                this.searchInWidth(color, coordX, coordY - 1)
-            }
-            if (coordX + 1 < this.sizeFieldX && color == this.field[coordX + 1][coordY].color && !this.field[coordX + 1][coordY].hover) {
-                this.searchInWidth(color, coordX + 1, coordY)
+        isColor(item, coordX, coordY) {
+            if (typeof item == "string" && item == this.field[coordX][coordY].color) return true
+            else if (typeof item == "number") return true
+            return false
+        },
+        checkUpCell(item, coordX, coordY, func) {
+            if (coordY < this.sizeFieldY && this.isColor(item, coordX, coordY) && !this.field[coordX][coordY].hover) {
+                func(item, coordX, coordY)
             }
         },
-        searchDetonateZone(coordX, coordY, radius) {
+        checkLeftCell(item, coordX, coordY, func) {
+            if (coordX >= 0 && this.isColor(item, coordX, coordY) && !this.field[coordX][coordY].hover) {
+                func(item, coordX, coordY)
+            }
+        },
+        checkDownCell(item, coordX, coordY, func) {
+            if (coordY >= 0 && this.isColor(item, coordX, coordY) && !this.field[coordX][coordY].hover) {
+                func(item, coordX, coordY)
+            }
+        },
+        checkRightCell(item, coordX, coordY, func) {
+            if (coordX < this.sizeFieldX && this.isColor(item, coordX, coordY) && !this.field[coordX][coordY].hover) {
+                func(item, coordX, coordY)
+            }
+        },
+        searchProcess(item, coordX, coordY, func) {
+            this.checkUpCell(item, coordX, coordY + 1, func)
+            this.checkLeftCell(item, coordX - 1, coordY, func)
+            this.checkDownCell(item, coordX, coordY - 1, func)
+            this.checkRightCell(item, coordX + 1, coordY, func)
+        },
+        searchInWidth(color, coordX, coordY) {
             this.saveTheStarValue(coordX, coordY)
+            this.searchProcess(color, coordX, coordY, this.searchInWidth)
+        },
+        searchDetonateZone(radius, coordX, coordY) {
+            this.saveTheStarValue(coordX, coordY)
+            console.log('radius = ',radius)
             if (radius < 2) {
                 return
             }
-            if (coordY + 1 < this.sizeFieldY && !this.field[coordX][coordY + 1].hover) {
-                this.searchDetonateZone(coordX, coordY + 1, radius - 1)
-            }
-            if (coordX - 1 >= 0 && !this.field[coordX - 1][coordY].hover) {
-                this.searchDetonateZone(coordX - 1, coordY, radius - 1)
-            }
-            if (coordY - 1 >= 0 && !this.field[coordX][coordY - 1].hover) {
-                this.searchDetonateZone(coordX, coordY - 1, radius - 1)
-            }
-            if (coordX + 1 < this.sizeFieldX && !this.field[coordX + 1][coordY].hover) {
-                this.searchDetonateZone(coordX + 1, coordY, radius - 1)
-            }
+            this.searchProcess(radius - 1, coordX, coordY, this.searchDetonateZone)
         },
         deactivateTheZone(){
             this.field = this.field.map(itemX => itemX.map(itemY => {
