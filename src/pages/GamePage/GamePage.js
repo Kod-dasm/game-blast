@@ -6,10 +6,10 @@ export default {
     },
     data() {
         return {
-            poly: [],
-            polyDel: [],
-            sizePolyX: 10,
-            sizePolyY: 10,
+            field: [],
+            fieldDel: [],
+            sizeFieldX: 10,
+            sizeFieldY: 10,
             minStar: 2,
             score: 0,
             needScore: 1200,
@@ -29,14 +29,15 @@ export default {
         }
     },
     methods: {
-        createdPoly() {
-            for (let i = 0; i < this.sizePolyX; i++) {
-                this.poly.push(this.addCell())
+        //Creating a field
+        createdField() {
+            for (let i = 0; i < this.sizeFieldX; i++) {
+                this.field.push(this.addCell())
             }
         },
         addCell() {
             let cells = []
-            for (let i = 0; i < this.sizePolyY; i++) {
+            for (let i = 0; i < this.sizeFieldY; i++) {
                 cells.push({ color: this.addRandomColor(), active: false, mistake: false, hover: false })
             }
             return cells
@@ -44,84 +45,33 @@ export default {
         addRandomColor() {
             return ['blue', 'green', 'purple', 'red', 'yellow'][Math.floor(Math.random()*5)]
         },
-        recoverPoly() {
-            for (let x = 0; x < this.sizePolyX; x++) {
-                for (let y = this.poly[x].length; y < this.sizePolyX; y++) {
+        //Restoring the field
+        recoverField() {
+            for (let x = 0; x < this.sizeFieldX; x++) {
+                for (let y = this.field[x].length; y < this.sizeFieldX; y++) {
                     this.addStar(x)
                 }   
             }
         },
         addStar(index) {
-            this.poly[index].push({ color: this.addRandomColor(), active: false, mistake: false, hover: false })
+            this.field[index].push({ color: this.addRandomColor(), active: false, mistake: false, hover: false })
         },
+        //The process of burning stars
         activateStars() {
-            for (let i = 0; i < this.polyDel.length; i++) {
-                this.poly[this.polyDel[i].x][this.polyDel[i].y].active = true
+            for (let i = 0; i < this.fieldDel.length; i++) {
+                this.field[this.fieldDel[i].x][this.fieldDel[i].y].active = true
             }
         },
         burnStars() {
             setTimeout(()=>{
-                this.poly = this.poly.map(itemX => itemX.filter(itemY => !itemY.active ? true : false))
-                this.recoverPoly()
+                this.field = this.field.map(itemX => itemX.filter(itemY => !itemY.active ? true : false))
+                this.recoverField()
             }, 100)
         },
         hoverAfterRemove(coordX, coordY) {
             setTimeout(()=>{
-                this.hoverStars(this.poly[coordX][coordY] ,coordX, coordY)
+                this.hoverStars(this.field[coordX][coordY] ,coordX, coordY)
             }, 100)
-        },
-        removeStars(item, coordX, coordY) {
-            if (this.activeBomb) {
-                this.activeBomb = false
-                this.activateStars()
-                this.burnStars(coordX, coordY)
-                this.hoverAfterRemove(coordX, coordY)
-                this.score += this.countingScore(this.polyDel.length)
-                if (this.score >= this.needScore) {
-                    this.win = true
-                    this.stopTimer()
-                }
-                return
-            }
-            if (this.polyDel.length >= this.minStar) {
-                this.activateStars()
-                this.burnStars()
-                this.hoverAfterRemove(coordX, coordY)
-                this.addBonuse(this.polyDel.length)
-                this.score += this.countingScore(this.polyDel.length)
-                if (this.score >= this.needScore) {
-                    this.win = true
-                    this.stopTimer()
-                }
-            }
-            else {
-                this.poly[coordX][coordY].mistake = true
-                setTimeout(()=>{
-                    this.poly[coordX][coordY].mistake = false
-                }, 200)
-            }
-            this.deactivateTheZone()
-            this.polyDel = []
-        },
-        hoverStars(item, coordX, coordY) { 
-            this.polyDel = []
-            !this.activeBomb ? this.searchInWidth(item.color, coordX, coordY) : this.searchDetonateZone(coordX, coordY, this.radiusBomb)
-        },
-        searchInWidth(color, coordX, coordY) {
-            this.poly[coordX][coordY].hover = true
-            this.polyDel.push({ x: coordX, y: coordY })
-            if (coordY + 1 < this.sizePolyY && color == this.poly[coordX][coordY + 1].color && !this.poly[coordX][coordY + 1].hover) {
-                this.searchInWidth(color, coordX, coordY + 1)
-            }
-            if (coordX - 1 >= 0 && color == this.poly[coordX - 1][coordY].color && !this.poly[coordX - 1][coordY].hover) {
-                this.searchInWidth(color, coordX - 1, coordY)
-            }
-            if (coordY - 1 >= 0 && color == this.poly[coordX][coordY - 1].color && !this.poly[coordX][coordY - 1].hover) {
-                this.searchInWidth(color, coordX, coordY - 1)
-            }
-            if (coordX + 1 < this.sizePolyX && color == this.poly[coordX + 1][coordY].color && !this.poly[coordX + 1][coordY].hover) {
-                this.searchInWidth(color, coordX + 1, coordY)
-            }
         },
         countingScore(count) {
             if (count >= this.minStar) {
@@ -129,6 +79,93 @@ export default {
             }
             return 0
         },
+        checkWin() {
+            if (this.score >= this.needScore) {
+                this.win = true
+                this.stopTimer()
+            }
+        },
+        removalProcess(coordX, coordY) {
+            this.activateStars()
+            this.burnStars(coordX, coordY)
+            this.hoverAfterRemove(coordX, coordY)
+            this.score += this.countingScore(this.fieldDel.length)
+            this.checkWin()
+        },
+        mistakenStar(coordX, coordY) {
+            this.field[coordX][coordY].mistake = true
+            setTimeout(()=>{
+                this.field[coordX][coordY].mistake = false
+            }, 200)
+        },
+        //Removing stars
+        removeStars(item, coordX, coordY) {
+            if (this.activeBomb) {
+                this.activeBomb = false
+                this.removalProcess(coordX, coordY)
+                return
+            }
+            if (this.fieldDel.length >= this.minStar) {
+                this.removalProcess(coordX, coordY)
+                this.addBonuse(this.fieldDel.length)
+            }
+            else {
+                this.mistakenStar(coordX, coordY)
+            }
+            this.deactivateTheZone()
+            this.fieldDel = []
+        },
+        //Finding the width to burn stars
+        hoverStars(item, coordX, coordY) { 
+            this.fieldDel = []
+            !this.activeBomb ? this.searchInWidth(item.color, coordX, coordY) : this.searchDetonateZone(coordX, coordY, this.radiusBomb)
+        },
+        saveTheStarValue(coordX, coordY) {
+            this.field[coordX][coordY].hover = true
+            this.fieldDel.push({ x: coordX, y: coordY })
+        },
+        searchInWidth(color, coordX, coordY) {
+            this.saveTheStarValue(coordX, coordY)
+            if (coordY + 1 < this.sizeFieldY && color == this.field[coordX][coordY + 1].color && !this.field[coordX][coordY + 1].hover) {
+                this.searchInWidth(color, coordX, coordY + 1)
+            }
+            if (coordX - 1 >= 0 && color == this.field[coordX - 1][coordY].color && !this.field[coordX - 1][coordY].hover) {
+                this.searchInWidth(color, coordX - 1, coordY)
+            }
+            if (coordY - 1 >= 0 && color == this.field[coordX][coordY - 1].color && !this.field[coordX][coordY - 1].hover) {
+                this.searchInWidth(color, coordX, coordY - 1)
+            }
+            if (coordX + 1 < this.sizeFieldX && color == this.field[coordX + 1][coordY].color && !this.field[coordX + 1][coordY].hover) {
+                this.searchInWidth(color, coordX + 1, coordY)
+            }
+        },
+        searchDetonateZone(coordX, coordY, radius) {
+            this.saveTheStarValue(coordX, coordY)
+            if (radius < 2) {
+                return
+            }
+            if (coordY + 1 < this.sizeFieldY && !this.field[coordX][coordY + 1].hover) {
+                this.searchDetonateZone(coordX, coordY + 1, radius - 1)
+            }
+            if (coordX - 1 >= 0 && !this.field[coordX - 1][coordY].hover) {
+                this.searchDetonateZone(coordX - 1, coordY, radius - 1)
+            }
+            if (coordY - 1 >= 0 && !this.field[coordX][coordY - 1].hover) {
+                this.searchDetonateZone(coordX, coordY - 1, radius - 1)
+            }
+            if (coordX + 1 < this.sizeFieldX && !this.field[coordX + 1][coordY].hover) {
+                this.searchDetonateZone(coordX + 1, coordY, radius - 1)
+            }
+        },
+        deactivateTheZone(){
+            this.field = this.field.map(itemX => itemX.map(itemY => {
+                if (itemY.hover) {
+                    itemY.hover = false
+                }
+                return itemY
+            }))
+        },
+        //Points and Bonuses panel
         startGame() {
             if (!this.gameStart) {
                 this.gameStart = true
@@ -144,25 +181,10 @@ export default {
         stopTimer(){
             clearTimeout(this.timer)
         },
-        updateField() {
-            // if (this.countUpdateField > 0 && this.gameStart && !this.pause && !this.win && !this.lost) {
-            //     this.poly = []
-            //     this.createdPoly()
-            //     this.countUpdateField--
-            // } 
-            if (this.bonuse > 2 && this.gameStart && !this.pause && !this.win && !this.lost) {
-                this.bonuse -= 3
-                this.poly = []
-                this.createdPoly()
-            }
-            // else {
-
-            // }
-        },
         startNewGame() {
             this.stopTimer()
             this.currentTimer = this.time
-            this.poly = []
+            this.field = []
             this.bonuse = 0
             this.score = 0
             this.countUpdateField = 3
@@ -170,52 +192,44 @@ export default {
             this.gameStart = false
             this.win = false
             this.lost = false
-            this.createdPoly()
+            this.createdField()
         },
         putPause() {
-            if (this.gameStart && !this.win && !this.lost) {
+            if (this.isGame()) {
                 this.pause = !this.pause
                 this.pause ? this.stopTimer() : this.startTimer()
             }
+        },
+        isGame() {
+            return this.gameStart && !this.win && !this.lost
         },
         //Bonuses
         addBonuse(count) {
             count > 5 ? this.bonuse++ : false
         },
         activateBonuseBomb() {
-            if (this.bonuse > 4) {
+            if (this.bonuse > 4 && !this.pause && this.isGame()) {
                 this.bonuse -= 5
                 this.activeBomb = !this.activeBomb
             }
         },
-        searchDetonateZone(coordX, coordY, radius) {
-            this.poly[coordX][coordY].hover = true
-            this.polyDel.push({ x: coordX, y: coordY })
-            if (radius < 2) {
-                return
-            }
-            if (coordY + 1 < this.sizePolyY && !this.poly[coordX][coordY + 1].hover) {
-                this.searchDetonateZone(coordX, coordY + 1, radius - 1)
-            }
-            if (coordX - 1 >= 0 && !this.poly[coordX - 1][coordY].hover) {
-                this.searchDetonateZone(coordX - 1, coordY, radius - 1)
-            }
-            if (coordY - 1 >= 0 && !this.poly[coordX][coordY - 1].hover) {
-                this.searchDetonateZone(coordX, coordY - 1, radius - 1)
-            }
-            if (coordX + 1 < this.sizePolyX && !this.poly[coordX + 1][coordY].hover) {
-                this.searchDetonateZone(coordX + 1, coordY, radius - 1)
+        updateField() {
+            // if (this.countUpdateField > 0 && this.gameStart && !this.pause && !this.win && !this.lost) {
+            //     this.field = []
+            //     this.createdField()
+            //     this.countUpdateField--
+            // } 
+            if (this.bonuse > 2 && !this.pause && this.isGame()) {
+                this.bonuse -= 3
+                this.field = []
+                this.createdField()
             }
         },
-        deactivateTheZone(){
-            for (let i = 0; i < this.polyDel.length; i++) {
-                this.poly[this.polyDel[i].x][this.polyDel[i].y].hover = false
-            }
-        },
+        
     },
     computed: {
-        showPoly() {
-            return this.poly
+        showField() {
+            return this.field
         },
         showScore() {
             return this.score
@@ -225,6 +239,9 @@ export default {
         },
         showLost() {
             return this.lost
+        },
+        showPause() {
+            return this.pause
         },
         showBonuse() {
             return this.bonuse
@@ -240,7 +257,7 @@ export default {
         },
     },
     created: function() {
-        this.createdPoly()
+        this.createdField()
     },
     destroyed: function() {
         this.stopTimer()

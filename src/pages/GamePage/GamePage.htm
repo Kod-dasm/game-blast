@@ -18,8 +18,9 @@
         <div class="playing-field plr10 size-rectangle cursor-pointer" :class="{ cursorBomb: showBomb }" @click="startGame">
             <div v-if="showWin" class="win fs40 flex content-center items-center">Победа!!!</div>
             <div v-if="showLost" class="win fs40 flex content-center items-center">Поражение!!!</div>
-            <div v-if="!showWin && !showLost" class="flex content-center items-end">
-                <div class="flex flex-column-reverse pbt10" v-for="(item, index) in showPoly">
+            <div v-if="showPause" class="win fs40 flex content-center items-center">Пауза</div>
+            <div v-if="!showWin && !showLost && !showPause" class="flex content-center items-end">
+                <div class="flex flex-column-reverse pbt10" v-for="(item, index) in showField">
                     <template class="flex flex-column" v-for="(item, i) in item">
                         <img  :src="require(`/public/images/${item.color}.png`)" alt="" class="cell" :class="{ cellHover: item.hover, cellActive: item.active, celMistake: item.mistake }" @mouseover="hoverStars(item, index, i)" @mouseleave="deactivateTheZone" @click="removeStars(item, index, i)">
                      </template>
