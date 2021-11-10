@@ -49,9 +49,6 @@
 .h-100{
     height: 100px;
 }
-.fs-20 {
-    font-size: 20px;
-}
 .pbt10 {
     padding-bottom: 12px;
     padding-top: 12px;
@@ -161,7 +158,6 @@
     height: 80px;
     z-index: 1;
     top: 40px;
-    font-size: large;
 }
 .elipse-time {
     position: relative;
@@ -174,9 +170,9 @@
     width: 200px;
     height: 80px;
 }
-// .bonuse {
-//     width: 400px;
-// }
+.bonuse {
+    height: 60px;
+}
 .button-bonuse {
     background-image: url(/images/bonus.png);
     width: 120px;
@@ -223,12 +219,106 @@
     filter: drop-shadow(2px 3px 5px white);
 }
 
-@media (max-width: 1000px) {
-    // .partials {
-    //   padding-right: 10px;
-    //   color: #a4abaf;
-    //   font-weight: bold;
+@media (max-width: 800px) {
+    body {
+        width: 400px;
+        align-items: center;
+    }
+    .header {
+        margin: 0;
+        height: 80px;
+        width: 95%;
+    }
+    .main {
+        flex-direction: column;
+    }
+    .button_update {
+        width: 100px;
+    }
+    .button_update-ellipse {
+        width: 25px;
+        height: 25px;
+    }
+    .pause {
+        height: 60px;
+        width: 60px;
+    }
+    .cell {
+        width: 30px;
+        height: 30px;
+    }
+    .button_new-game {
+        width: 100px;
+    }
+    .panel {
+        flex-direction: row;
+        align-self: auto;
+    }
+    .panel-score {
+        width: 140px;
+        height: 140px;
+    }
+    .rectangle-time {
+        width: 100px;
+        height: 40px;
+        top: 20px;
+        p {
+            margin: 0;
+        }
+    }
+    .elipse-time {
+        width: 80px;
+        height: 80px;
+    }
+    .rectangle-score {
+        width: 80px;
+        height: 40px;
+    }
+    .bonuse {
+        flex-direction: column;
+        justify-content: center;
+        height: 180px;
+    }
+    .button-bonuse {
+        width: 60px;
+        height: 60px;
+    }
+    .icon-bonuse {
+        width: 20px;
+        height: 20px;
+    }
+    .price-bonus {
+        width: 40px;
+        height: 20px;
+    }
+
+    .win {
+        width: 200px;
+        height: 200px;
+    }
+
+    // .footer_container-cell {
+    //     justify-content: center;
+    //     flex-direction: row-reverse;
     // }
+    .fs40 {
+        font-size: 20px;
+    }
+    .fs30 {
+        font-size: 15px;
+    }
+    .fs20 {
+        font-size: 10px;
+    }
+    .h-100 {
+        height: 80px;
+    }
+    .h-85 {
+        height: 60px;
+    }
+    .h-60 {
+        height: 45px;
+    }
     // .images{
     //   width: 50px;
     //   height: 70px;

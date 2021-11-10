@@ -1,5 +1,5 @@
 <body class="body flex flex-column content-between">
-    <header class="header size-rectangle flex content-around items-start fs-20">
+    <header class="header size-rectangle flex content-around items-start fs20">
         <div class="flex content-center items-center flex-auto h-85">
             <div class="button_update size-rectangle flex content-center items-center h-60" @click="updateField">
                 БОНУСЫ
@@ -14,7 +14,7 @@
             <div class="pause size-rectangle" @click="putPause"></div>
         </div>
     </header>
-    <main class="flex content-around items-center">
+    <main class="main flex content-around items-center">
         <div class="playing-field plr10 size-rectangle cursor-pointer" :class="{ cursorBomb: showBomb }" @click="startGame">
             <div v-if="showWin" class="win fs40 flex content-center items-center">Победа!!!</div>
             <div v-if="showLost" class="win fs40 flex content-center items-center">Поражение!!!</div>
@@ -27,16 +27,18 @@
                  </div>
             </div>
         </div>
-        <div class="flex flex-column items-center items-start-self">
-            <div class="rectangle-time size-rectangle"><p>ВРЕМЯ:</p></div>
-            <div class="panel-score size-rectangle flex flex-column content-center items-center">
-                <div class="size-rectangle elipse-time flex content-center items-center fs40">{{ showCurrentTimer }}</div>
-                <div class="size-rectangle rectangle-score flex flex-column content-center items-center">
-                    <div class="fs20">ОЧКИ:</div>
-                    <div class="fs30">{{ showScore }}</div>
+        <div class="panel flex flex-column items-center items-start-self">
+            <div class="flex flex-column items-center">
+                <div class="rectangle-time size-rectangle"><p>ВРЕМЯ:</p></div>
+                <div class="panel-score size-rectangle flex flex-column content-center items-center">
+                    <div class="size-rectangle elipse-time flex content-center items-center fs40">{{ showCurrentTimer }}</div>
+                    <div class="size-rectangle rectangle-score flex flex-column content-center items-center">
+                        <div class="fs20">ОЧКИ:</div>
+                        <div class="fs30">{{ showScore }}</div>
+                    </div>
                 </div>
             </div>
-            <div class="bonuse flex h-60">
+            <div class="bonuse flex">
                 <div class="flex flex-column content-center items-center button-bonuse size-rectangle" @click="activateBonuseBomb">
                     <img src="/images/bomb.png" alt="" class="icon-bonuse">
                     <div class="price-bonus size-rectangle flex content-center items-center">5</div>
@@ -61,7 +63,7 @@
                 </div>
             </div> -->
             <div class="footer_container-cell">
-                <div class="button_new-game size-rectangle flex content-center items-center cursor-pointer h-60" @click="startNewGame">
+                <div class="button_new-game size-rectangle flex content-center items-center cursor-pointer h-60 fs20" @click="startNewGame">
                     НОВАЯ ИГРА
                 </div>
             </div>
