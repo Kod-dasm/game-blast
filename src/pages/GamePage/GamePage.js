@@ -131,21 +131,33 @@ export default {
         },
         checkUpCell(item, coordX, coordY, func) {
             if (coordY < this.sizeFieldY && this.isColor(item, coordX, coordY) && !this.field[coordX][coordY].hover) {
+                if (this.activeBomb && coordY == this.fieldDel[0].y) {
+                    return
+                }
                 func(item, coordX, coordY)
             }
         },
         checkLeftCell(item, coordX, coordY, func) {
             if (coordX >= 0 && this.isColor(item, coordX, coordY) && !this.field[coordX][coordY].hover) {
+                if (this.activeBomb && coordX == this.fieldDel[0].x) {
+                    return
+                }
                 func(item, coordX, coordY)
             }
         },
         checkDownCell(item, coordX, coordY, func) {
             if (coordY >= 0 && this.isColor(item, coordX, coordY) && !this.field[coordX][coordY].hover) {
+                if (this.activeBomb && coordY == this.fieldDel[0].y) {
+                    return
+                }
                 func(item, coordX, coordY)
             }
         },
         checkRightCell(item, coordX, coordY, func) {
             if (coordX < this.sizeFieldX && this.isColor(item, coordX, coordY) && !this.field[coordX][coordY].hover) {
+                if (this.activeBomb && coordX == this.fieldDel[0].x) {
+                    return
+                }
                 func(item, coordX, coordY)
             }
         },
@@ -162,7 +174,7 @@ export default {
         searchDetonateZone(radius, coordX, coordY) {
             this.saveTheStarValue(coordX, coordY)
             console.log('radius = ',radius)
-            if (radius < 2) {
+            if (radius < 1) {
                 return
             }
             this.searchProcess(radius - 1, coordX, coordY, this.searchDetonateZone)
