@@ -15,36 +15,50 @@
         </div>
     </header>
     <main class="flex content-around items-center">
-        <div class="playing-field plr10 size-rectangle cursor-pointer" @click="startGame">
+        <div class="playing-field plr10 size-rectangle cursor-pointer" :class="{ cursorBomb: showBomb }" @click="startGame">
             <div v-if="showWin" class="win fs40 flex content-center items-center">Победа!!!</div>
             <div v-if="showLost" class="win fs40 flex content-center items-center">Поражение!!!</div>
             <div v-if="!showWin && !showLost" class="flex content-center items-end">
                 <div class="flex flex-column-reverse pbt10" v-for="(item, index) in showPoly">
                     <template class="flex flex-column" v-for="(item, i) in item">
-                        <img  :src="require(`/public/images/${item.color}.png`)" alt="" class="cell" :class="{ cellActive: item.active, celMistake: item.mistake }" @click="removeStars(item, index, i)">
+                        <img  :src="require(`/public/images/${item.color}.png`)" alt="" class="cell" :class="{ cellHover: item.hover, cellActive: item.active, celMistake: item.mistake }" @mouseover="hoverStars(item, index, i)" @mouseleave="deactivateTheZone" @click="removeStars(item, index, i)">
                      </template>
                  </div>
             </div>
         </div>
-        <div class="flex flex-column items-center">
+        <div class="flex flex-column items-center items-start-self">
             <div class="rectangle-time size-rectangle"><p>ВРЕМЯ:</p></div>
             <div class="panel-score size-rectangle flex flex-column content-center items-center">
                 <div class="size-rectangle elipse-time flex content-center items-center fs40">{{ showCurrentTimer }}</div>
-                <div class="size-rectangle rectangle-score">
-                    <p class="fs20">ОЧКИ:</p>
-                    <span class="fs30">{{ showScore }}</span>
+                <div class="size-rectangle rectangle-score flex flex-column content-center items-center">
+                    <div class="fs20">ОЧКИ:</div>
+                    <div class="fs30">{{ showScore }}</div>
+                </div>
+            </div>
+            <div class="bonuse flex h-60">
+                <div class="flex flex-column content-center items-center button-bonuse size-rectangle" @click="activateBonuseBomb">
+                    <img src="/images/bomb.png" alt="" class="icon-bonuse">
+                    <div class="price-bonus size-rectangle flex content-center items-center">5</div>
+                </div>
+                <div class="flex flex-column content-center items-center button-bonuse size-rectangle" @click="updateField">
+                    <img src="/images/repeat.png" alt="" class="icon-bonuse">
+                    <div class="price-bonus size-rectangle flex content-center items-center">3</div>
+                </div>
+                <div class="flex flex-column content-center items-center button-bonuse size-rectangle">
+                    <!-- <img src="/images/bomb.png" alt="" class="icon-bonuse">
+                    <div class="price-bonus size-rectangle flex content-center items-center">15</div> -->
                 </div>
             </div>
         </div>
     </main>
     <footer class="flex content-end">
         <div class="flex content-center">
-            <div class="flex content-center footer_container-cell">
+            <!-- <div class="flex content-center footer_container-cell">
                 <div class="button_update size-rectangle flex content-center items-center cursor-pointer h-60" @click="updateField">
                     ОБНОВИТЬ
                     <div class="button_update-ellipse size-rectangle flex content-center items-center">{{ showCountUpdateField }}</div>
                 </div>
-            </div>
+            </div> -->
             <div class="footer_container-cell">
                 <div class="button_new-game size-rectangle flex content-center items-center cursor-pointer h-60" @click="startNewGame">
                     НОВАЯ ИГРА
