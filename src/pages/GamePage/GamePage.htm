@@ -1,4 +1,4 @@
-<body class="body flex flex-column content-between">
+<body class="body flex flex-column content-between items-stretch">
     <header class="header size-rectangle flex content-around items-start fs20">
         <div class="flex content-center items-center flex-auto h-85">
             <div class="button_update size-rectangle flex content-center items-center h-60" @click="updateField">
@@ -54,19 +54,19 @@
             </div>
         </div>
     </main>
-    <footer class="flex content-end">
-        <div class="flex content-center">
+    <footer class="footer flex content-center">
+        <!-- <div class="flex content-center"> -->
             <!-- <div class="flex content-center footer_container-cell">
                 <div class="button_update size-rectangle flex content-center items-center cursor-pointer h-60" @click="updateField">
                     ОБНОВИТЬ
                     <div class="button_update-ellipse size-rectangle flex content-center items-center">{{ showCountUpdateField }}</div>
                 </div>
             </div> -->
-            <div class="footer_container-cell">
+            <div class="footer_container-cell flex content-center">
                 <div class="button_new-game size-rectangle flex content-center items-center cursor-pointer h-60 fs20" @click="startNewGame">
                     НОВАЯ ИГРА
                 </div>
             </div>
-        </div>
+        <!-- </div> -->
     </footer>
 </body>
